@@ -20,7 +20,7 @@ The [full image description on Docker Hub](https://hub.docker.com/_/ghost/) is g
 
 # For Deployment to Cloud Run
 
-UPDATE Cloud Run has now added a Secrets Manager for Cloud Run services. It is best practice to use secrets for sensitive information like database configurations. 
+UPDATE Cloud Run has now added a [Secrets Manager](https://cloud.google.com/run/docs/configuring/secrets) for Cloud Run services. It is best practice to use secrets for sensitive information like database configurations. 
 
 You can expose the secret values through environment variables instead of setting the environment variables with the sensitive information. 
 
