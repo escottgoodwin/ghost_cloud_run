@@ -1,0 +1,33 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: CONTAINER-NAME
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    spec:
+      containers:
+      - image: grc.io/PROJECT-ID/CONTAINER-NAME
+        resources:
+          limits:
+            memory: 256M
+        env:
+        - name: database__client
+          value: mysql
+        - name: database__connection__host
+          value: MYSQL_HOST
+        - name: database__connection__port
+          value: MYSQL_PORT
+        - name: database__connection__user
+          value: MYSQL_USER
+        - name: database__connection__password
+          value: MYSQL_PASSWORD
+        - name: database__connection__database
+          value: MYSQL_GHOST_DB_NAME
+        - name: storage__active
+          value: gcs
+        - name: storage__gcs__bucket
+          value: GCS_BUCKET_NAME
+        - name: url
+          value: https://ghost.org/
