@@ -53,8 +53,8 @@ When you first visit the service url, you will likely get a 503 message while gh
 
 Modify the environment variables in `service.yaml` file with your database and storage bucket. You can also add a cdn for your images by adding: 
 
-- name: storage__gcs__cdn
-  value: CDN_DOMAIN
+    name: storage__gcs__cdn
+    value: CDN_DOMAIN
 
 Leave the placeholder url. 
 
