@@ -20,13 +20,19 @@ The [full image description on Docker Hub](https://hub.docker.com/_/ghost/) is g
 
 # For Deployment to Cloud Run
 
+UPDATE Cloud Run has now added a Secrets Manager for Cloud Run services. It is best practice to use secrets for sensitive information like database configurations. 
+
+You can expose the secret values through environment variables instead of setting the environment variables with the sensitive information. 
+
+[See More](https://cloud.google.com/run/docs/configuring/secrets) about using secrets with the console, cli and yaml files. 
+
 ## With the Console
 
 See this article for complete instructions using the Google console. 
 
 ## With the gcloud cli
 
-To use the gcloud cli with the Google Cloud Build service. This assumes your Cloud Run service will have the same name as your container. The url will be a place holder url until you get the service url after the service successfully deploys. 
+To use the gcloud cli with the Google Cloud Build service. This assumes your Cloud Run service will have the same name as your container. The url will be a place holder url until you get the service url after the service successfully deploys. The plugin also allows you set a CDN address for your images so that all images in your Ghost posts will point to the CDN. 
 
 * Build with Cloud Build (Optional)
 
@@ -36,6 +42,8 @@ To use the gcloud cli with the Google Cloud Build service. This assumes your Clo
 
 ```gcloud run deploy CONTAINER-NAME --image grc.io/PROJECT-ID/CONTAINER-NAME --allow-unauthenticated --update-env-vars database__client=mysql,database__connection__host=MYSQL_HOST,database__connection__port=MYSQL_PORT,database__connection__user=MYSQL_USER,database__connection__password=MYSQL_PASSWORD,database__connection__database=MYSQL_GHOST_DB_NAME,storage__active=gcs,storage__gcs__bucket=GCS_BUCKET_NAME,url='https://ghost.org/'```
 
+Optional CDN environment variable ```storage__gcs__cdn=CDN_DOMAIN```
+
 * Redeploy with the service url. 
 ```gcloud run services update CONTAINER-NAME --update-env-vars url=SERVICE_URL```
 
@@ -43,7 +51,12 @@ When you first visit the service url, you will likely get a 503 message while gh
 
 ## With Yaml File
 
-Modify the environment variables in `service.yaml` file with your database and storage bucket. Leave the placeholder url. 
+Modify the environment variables in `service.yaml` file with your database and storage bucket. You can also add a cdn for your images by adding: 
+
+- name: storage__gcs__cdn
+  value: CDN_DOMAIN
+
+Leave the placeholder url. 
 
 * Create the service:
 
