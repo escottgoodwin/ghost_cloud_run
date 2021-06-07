@@ -8,13 +8,13 @@ If you are using an M1 Mac, be sure to use a ARM Ghost Docker image. This Docker
 
 The [full image description on Docker Hub](https://hub.docker.com/_/ghost/) is generated/maintained over in [the docker-library/docs repository](https://github.com/docker-library/docs), specifically in [the `ghost` directory](https://github.com/docker-library/docs/tree/master/ghost).
 
-## Instructions
+## Build and deploy container
 
-Build 
+* Build 
 
 ```docker build -t CONTAINER-NAME .```
 
-Deploy to Google Container Registry
+* Deploy to Google Container Registry
 
 ``` docker tag CONTAINERNAME grc.io/PROJECT-ID/CONTAINER-NAME```
 
@@ -28,15 +28,15 @@ See this article for complete instructions using the Google console.
 
 To use the gcloud cli with the Google Cloud Build service. This assumes your Cloud Run service will have the same name as your container. The url will be a place holder url until you get the service url after the service successfully deploys. 
 
-Build with Cloud Build (Optional)
+* Build with Cloud Build (Optional)
 
 ```gcloud builds submit --tag gcr.io/PROJECT-ID/CONTAINER-NAME```
 
-Deploy to Cloud Run
+* Deploy to Cloud Run
 
 ```gcloud run deploy CONTAINER-NAME --image grc.io/PROJECT-ID/CONTAINER-NAME --allow-unauthenticated --update-env-vars database__client=mysql,database__connection__host=MYSQL_HOST,database__connection__port=MYSQL_PORT,database__connection__user=MYSQL_USER,database__connection__password=MYSQL_PASSWORD,database__connection__database=MYSQL_GHOST_DB_NAME,storage__active=gcs,storage__gcs__bucket=GCS_BUCKET_NAME,url='https://ghost.org/'```
 
-Redeploy with the service url. 
+* Redeploy with the service url. 
 ```gcloud run services update CONTAINER-NAME --update-env-vars url=SERVICE_URL```
 
 When you first visit the service url, you will likely get a 503 message while ghost initializes and creates the database. Refresh and the page will load properly. Visit `SERVICE_URL/ghost` to visit the admin screen and creates your admin user. 
@@ -45,9 +45,11 @@ When you first visit the service url, you will likely get a 503 message while gh
 
 Modify the environment variables in `service.yaml` file with your database and storage bucket. Leave the placeholder url. 
 
-Create the service:
+* Create the service:
 
 ```gcloud beta run services replace service.yaml```
+
+* Set url
 
 Once the service deploys successfully, get the service url:
 
@@ -57,11 +59,11 @@ Copy service url and update the url environment variable with the service url:
 
 ```gcloud run services update CONTAINER-NAME --update-env-vars url=SERVICE_URL```
 
-Allow unauthenticated access
+* Allow unauthenticated access
 
 ```gcloud run services set-iam-policy CONTAINER-NAME policy.yaml```
 
-*  In order to allow unauthenticated access, your IAM permissions must contain the run.services.setIamPolicy permission. 
+In order to allow unauthenticated access, your IAM permissions must contain the run.services.setIamPolicy permission. 
 
 ## After Deploying
 
